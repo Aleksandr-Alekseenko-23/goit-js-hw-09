@@ -22,7 +22,7 @@ const options = {
       return Notify.failure('Please choose a date in the future');
     }
     buttonStartRef.disabled = false;
-
+    // coment
     console.log(selectedDates[0]);
   },
 };
