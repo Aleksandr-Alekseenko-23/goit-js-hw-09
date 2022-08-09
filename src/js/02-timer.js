@@ -22,6 +22,7 @@ const options = {
       return Notify.failure('Please choose a date in the future');
     }
     buttonStartRef.disabled = false;
+
     // coment
     console.log(selectedDates[0]);
   },
@@ -32,8 +33,14 @@ buttonStartRef.addEventListener('click', onClick);
 const flatPickrInput = flatpickr(inputRef, options);
 
 function onClick() {
-  setInterval(() => {
-    convertTime();
+  inputRef.disabled = true;
+  let intervalId = setInterval(() => {
+    const timeNow = flatPickrInput.selectedDates[0] - Date.now();
+    if (timeNow < 1000) {
+      clearInterval(intervalId);
+      inputRef.disabled = false;
+    }
+    convertTime(timeNow);
   }, 1000);
 }
 
@@ -56,9 +63,7 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-function convertTime() {
-  const timeNow =
-    flatPickrInput.selectedDates[0].getTime() - new Date().getTime();
+function convertTime(timeNow) {
   daysRef.textContent = addLeadingZero(convertMs(timeNow).days);
   hoursRef.textContent = addLeadingZero(convertMs(timeNow).hours);
   minutesRef.textContent = addLeadingZero(convertMs(timeNow).minutes);
